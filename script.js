@@ -97,9 +97,11 @@ class Tree {
         this.size = this.getSortedArrayLength(this.sortArray)
     }
     sortArray(array) {
+
         return mergeSort(array)    
     }
     getSortedArrayLength(array) {
+
         let sortedArray = mergeSort(array)
         this.size = sortedArray.length
         return  sortedArray.length
@@ -116,6 +118,32 @@ class Tree {
         
     
         return node
+    }
+    insert(data) {
+        const node = this.root
+        if (node === null) {
+            this.root = new Node(data)
+            return
+        } else {
+            const searchTree = (node) => {
+                if (data < node.data) {
+                    if (node.left === null) {
+                        node.left = new Node(data)
+                        return
+                    } else {
+                        searchTree(node.left)
+                    }
+                } else if (data > node.data) {
+                    if (node.right === null) {
+                        node.right = new Node(data)
+                        return
+                    } else {
+                        searchTree(node.right)
+                    }
+                }
+            }
+            searchTree(node)
+        }
     }
 
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
