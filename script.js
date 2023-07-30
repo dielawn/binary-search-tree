@@ -16,6 +16,7 @@ const getRandomNumbers = (numberOfNumbers) => {
 }
 
 function mergeSort(arr) {
+    console.log()
     if (arr.length <= 1) {
         return arr
     }
@@ -54,7 +55,9 @@ function merge(left, right) {
             leftIndex++;
             rightIndex++;
         }
-        // Add remaining elements from both arrays
+    }
+
+    // Add remaining elements from both arrays
     while (leftIndex < left.length) {
         if (mergedArr.length === 0 || left[leftIndex] !== mergedArr[mergedArr.length - 1]) {
             mergedArr.push(left[leftIndex]);
@@ -68,10 +71,11 @@ function merge(left, right) {
         }
         rightIndex++;
     }
-    return mergedArr.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+
+    return mergedArr;
     }
-}
-const randomArray = getRandomNumbers(50)
+
+
 
 
 
@@ -79,55 +83,49 @@ const randomArray = getRandomNumbers(50)
 
 //build a node class *data, leftChild, rightChild attributes
 class Node {
-    constructor(value) {
-        this.value = value;
-        this.left = null;
-        this.right = null;
+    constructor(data) {
+        this.data = data
+        this.left = null
+        this.right = null
     }
 }
 
 //build a tree class *accepts array, root attributes uses return value of buildTree()
-// class Tree {
-//     constructor(array) {
-//         this.root = this.buildTree(array)
-//         this.size = 0
-//         array.forEach((value) => this.insert(value))
-//     }
+
 
 //buildTree function takes array turns it into an balanced binary tree full of Node objects *sort and remove duplicates, return the level-0 root node
 class Tree {
     constructor() {
         this.root = null    
+        this.size = this.getArrayLength(this.sortArray)
     }
-    returnData(array) {
-        array.forEach(item => {
-            return item
-        });
+    sortArray(array) {
+        return mergeSort(array)    
     }
+    getArrayLength(array) {
+        let sortedArray = mergeSort(array)
+        return this.size = sortedArray.length
+    } 
+    balancedBinaryTree(array, start = 0, end = this.getArrayLength(array)) {
+
+
+
+        if (array.length === 0) return null
+        if (array.length === 1) return new Node(array[0])     
+
+        const sortedData = this.sortArray(array)
+
+        let midPoint = Math.floor(sortedData.length / 2)
+        let root = new Node(sortedData[midPoint])
+
+        root.left = this.balancedBinaryTree(0, midPoint - 1)
+        root.right = this.balancedBinaryTree(midPoint + 1, getArrayLength(sortedData))
+        console.log(root)
+        return root
+    
         
-    insert(data) {
-        let newNode = new Node(data)
-        if (this.root === null) {
-            this.root = newNode
-        } else {
-            this.insertNode(this.root, newNode)
-        }
-    }
-    insertNode(node, newNode) {
-        if (newNode.data < node.data) {
-            if (node.left === null) {
-                node.left= newNode
-            } else {
-                this.insertNode(node.left, newNode)
-            }
-        } else {
-            if (node.right === null) {
-                node.right = newNode
-            } else {
-                this.insertNode(node.right, newNode)
-            }
-        }
-    }
+       
+    } 
 
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
@@ -180,21 +178,22 @@ class Tree {
 
 
 
+const randomArray = getRandomNumbers(50)
 
-
-const myTree = new Tree(randomArray)
+const myTree = new Tree()
 console.log(myTree)
+console.log(randomArray)
+console.log(myTree.sortArray(randomArray))
+console.log(myTree.getArrayLength(randomArray))
 
-
-
-
-
+console.log(myTree.balancedBinaryTree(randomArray))
 
 
 // Test the function
+// myTree.buildTreeRecursive(randomArray)
+// const root = myTree.insert(myTree.returnData(sortedArray))
+// // const insert = myTree.insert(99)
+// const print = myTree.prettyPrint(root)
 
-const root = myTree.insert(myTree.returnData(randomArray))
-// const insert = myTree.insert(99)
-const print = myTree.prettyPrint(root)
-
-console.log(root); // Print the value of the level-0 root node
+// console.log(root); // Print the value of the level-0 root node
+// console.log(myTree.returnData(randomArray))
