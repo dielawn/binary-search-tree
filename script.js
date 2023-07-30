@@ -80,7 +80,6 @@ function merge(left, right) {
 
 
 
-
 //build a node class *data, leftChild, rightChild attributes
 class Node {
     constructor(data) {
@@ -91,41 +90,33 @@ class Node {
 }
 
 //build a tree class *accepts array, root attributes uses return value of buildTree()
-
-
 //buildTree function takes array turns it into an balanced binary tree full of Node objects *sort and remove duplicates, return the level-0 root node
 class Tree {
     constructor() {
-        this.root = null    
-        this.size = this.getArrayLength(this.sortArray)
+        this.root = this.buildTree(sortedArray)    
+        this.size = this.getSortedArrayLength(this.sortArray)
     }
     sortArray(array) {
         return mergeSort(array)    
     }
-    getArrayLength(array) {
+    getSortedArrayLength(array) {
         let sortedArray = mergeSort(array)
-        return this.size = sortedArray.length
+        this.size = sortedArray.length
+        return  sortedArray.length
     } 
-    balancedBinaryTree(array, start = 0, end = this.getArrayLength(array)) {
-
-
-
-        if (array.length === 0) return null
-        if (array.length === 1) return new Node(array[0])     
-
-        const sortedData = this.sortArray(array)
-
-        let midPoint = Math.floor(sortedData.length / 2)
-        let root = new Node(sortedData[midPoint])
-
-        root.left = this.balancedBinaryTree(0, midPoint - 1)
-        root.right = this.balancedBinaryTree(midPoint + 1, getArrayLength(sortedData))
-        console.log(root)
-        return root
-    
+    buildTree(array, start = 0, end = this.getSortedArrayLength(array)) {
         
-       
-    } 
+        if (start >= end) return null 
+
+        let midPoint = Math.floor((start + end) / 2)
+        
+        let node = new Node(array[midPoint])                    
+        node.right = this.buildTree(array, midPoint + 1, end)
+        node.left = this.buildTree(array, start, midPoint - 1)
+        
+    
+        return node
+    }
 
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
@@ -136,7 +127,7 @@ class Tree {
             this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false)
         }
 
-        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`)
+        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`)
        
         if (node.left !== null) {
             this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true)
@@ -175,18 +166,21 @@ class Tree {
 // rebalance unbalanced
 }
 
-
-
-
 const randomArray = getRandomNumbers(50)
+const sortedArray = mergeSort(randomArray)
+
+
+
+
+console.log(sortedArray)
 
 const myTree = new Tree()
 console.log(myTree)
 console.log(randomArray)
 console.log(myTree.sortArray(randomArray))
-console.log(myTree.getArrayLength(randomArray))
+console.log(myTree.getSortedArrayLength(randomArray))
 
-console.log(myTree.balancedBinaryTree(randomArray))
+myTree.buildTree(myTree.sortArray(randomArray))
 
 
 // Test the function
