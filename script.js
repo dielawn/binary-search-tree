@@ -146,6 +146,7 @@ class Tree {
     }
     remove(data) {
         this.root = this.removeNode(this.root, data)
+        this.size-- 
     }
     removeNode(root, data) {
         if (root === null) return root
@@ -175,10 +176,11 @@ class Tree {
             else succParent.right = succ.right
 
             root.data = succ.data
-
+            
             return root
         }
     }
+     //find function which accepts a value and return the node with the given value
     find(data) {
         const searchTree = (node) => {
 
@@ -190,7 +192,43 @@ class Tree {
         
         return searchTree(this.root)
     }
-           
+    //level order function accepts another fuction, traverses the tree, returns an array of values, queue array
+    levelOrderTraversal() {
+
+        if (this.root == null) return null
+
+        let queue = []
+        let result = []
+        queue.push(this.root)
+
+        while (queue.length > 0) {
+            let node = queue.shift()
+
+            result.push(node.data)
+
+            if (node.left) {
+                queue.push(node.left)
+            }
+
+            if (node.right) {
+                queue.push(node.right)
+            }
+        }
+        
+        return result   
+        }
+        
+
+    
+//inorder, preorder, and postorder functions traverse tree in each way, returns array of values 
+
+//height function accepts node returns its height
+
+//depth function accepts node returns depth
+
+//is balanced checks if left and right subtree have a height difference no more than 1
+
+// rebalance unbalanced         
     
     htmlPrint(node = this.root,  prefix = "", isLeft = true) {
         if (node === null) {
@@ -227,39 +265,12 @@ class Tree {
             this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true)
         }
     }
-//write insert and delete functions which accepts a value
-// insert(value, root = this.root) {
-//     if (root === null) {
-//       this.size++;
-//       return new Node(value);
-//     }
-  
-//     if (value < root.value) {
-//       root.left = this.insert(value, root.left);
-//     } else if (value > root.value) {
-//       root.right = this.insert(value, root.right);
-//     }
-  
-//     return root;
-//   }
-    removeFrom(index) {
 
-    }
-//find function which accepts a value and return the node with the given value
 
-//level order function accepts another fuction, traverses the tree, returns an array of values, queue array
-
-//inorder, preorder, and postorder functions traverse tree in each way, returns array of values 
-
-//height function accepts node returns its height
-
-//depth function accepts node returns depth
-
-//is balanced checks if left and right subtree have a height difference no more than 1
-
-// rebalance unbalanced
 }
 
+const nameArray = ['alex', 'bob', 'cindy', 'dave', 'ed', 'frank', 'gina', 'helen', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally', 'tom', 'unis', 'vicki', 'wendel', 'xavier', 'zoe' ]
+const unsortedNames = ['zoe', 'alex', 'xavier', 'bob', 'wendel','cindy', 'vicki','dave','unis','ed','tom', 'frank', 'gina', 'helen', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel']
 const randomArray = getRandomNumbers(50)
 const sortedArray = mergeSort(randomArray)
 
