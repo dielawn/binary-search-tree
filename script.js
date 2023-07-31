@@ -179,6 +179,19 @@ class Tree {
             return root
         }
     }
+    find(data) {
+        const searchTree = (node) => {
+
+            if (node === null) return null
+            if (data === node.data) return node
+            else if (data < node.data) return searchTree(node.left)
+            else return searchTree(node.right)
+        }
+        
+        return searchTree(this.root)
+    }
+           
+    
     htmlPrint(node = this.root,  prefix = "", isLeft = true) {
         if (node === null) {
             return;
