@@ -1,4 +1,4 @@
-// const containerDiv = document.getElementById('container')
+const containerDiv = document.getElementById('container')
 
 
 
@@ -16,7 +16,7 @@ const getRandomNumbers = (numberOfNumbers) => {
 }
 
 function mergeSort(arr) {
-    console.log()
+   
     if (arr.length <= 1) {
         return arr
     }
@@ -123,28 +123,81 @@ class Tree {
         const node = this.root
         if (node === null) {
             this.root = new Node(data)
+            this.size++
             return
         } else {
             const searchTree = (node) => {
                 if (data < node.data) {
                     if (node.left === null) {
                         node.left = new Node(data)
+                        this.size++
                         return
-                    } else {
-                        searchTree(node.left)
-                    }
+                    } else searchTree(node.left)
                 } else if (data > node.data) {
                     if (node.right === null) {
                         node.right = new Node(data)
+                        this.size++
                         return
-                    } else {
-                        searchTree(node.right)
-                    }
+                    } else searchTree(node.right)
                 }
             }
             searchTree(node)
         }
     }
+    remove(data) {
+        this.root = this.removeNode(this.root, data)
+    }
+    removeNode(root, data) {
+        if (root === null) return root
+        
+        if (data < root.data)  {
+            root.left = this.removeNode(root.left, data)
+            return root
+        } else if (data > root.data) {
+            root.right = this.removeNode(root.right, data)
+            return root
+        } else {
+            //node with no children
+            if (root.left === null) return root.right
+            else if (root.right === null) return root.left
+
+            //node with 2 children
+            let succParent = root
+            let succ = root.right
+
+            while (succ.left !== null) {
+                succParent = succ
+                succ = succ.left
+            }
+
+            //update connection from succParent to succ.right
+            if (succParent !== root) succParent.left = succ.right
+            else succParent.right = succ.right
+
+            root.data = succ.data
+
+            return root
+        }
+    }
+    htmlPrint(node = this.root,  prefix = "", isLeft = true) {
+        if (node === null) {
+            return;
+        }
+    
+        if (node.right !== null) {
+            this.htmlPrint(node.right,  `${prefix}${isLeft ? "│   " : "    "}`, false);
+        }
+    
+        const newNode = document.createElement("div");
+        newNode.classList.add('node')
+        newNode.textContent = `${prefix}${isLeft ? "  └────   " : "  ┌──── "}${node.data}`;
+        containerDiv.appendChild(newNode);
+    
+        if (node.left !== null) {
+            this.htmlPrint(node.left,  `${prefix}${isLeft ? "    " : "│   "}`, true);
+        }
+    }
+    
 
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
@@ -219,3 +272,5 @@ myTree.buildTree(myTree.sortArray(randomArray))
 
 // console.log(root); // Print the value of the level-0 root node
 // console.log(myTree.returnData(randomArray))
+
+myTree.htmlPrint(myTree.root)
