@@ -92,8 +92,8 @@ class Node {
 //build a tree class *accepts array, root attributes uses return value of buildTree()
 //buildTree function takes array turns it into an balanced binary tree full of Node objects *sort and remove duplicates, return the level-0 root node
 class Tree {
-    constructor() {
-        this.root = this.buildTree(sortedArray)    
+    constructor(array) {
+        this.root = this.buildTree(array)    
         this.size = this.getSortedArrayLength(this.sortArray)
     }
     sortArray(array) {
@@ -199,6 +199,7 @@ class Tree {
 
         let queue = []
         let result = []
+
         queue.push(this.root)
 
         while (queue.length > 0) {
@@ -214,11 +215,52 @@ class Tree {
                 queue.push(node.right)
             }
         }
-        
-        return result   
-        }
-        
 
+        return result   
+    }
+    inOrder() {
+
+        if (this.root == null) return null
+        
+        const result = []
+        const inOrderTraverse = (node) => {
+            node.left && inOrderTraverse(node.left)
+            result.push(node.data)
+            node.right && inOrderTraverse(node.right)
+        }
+        inOrderTraverse(this.root)
+        return result
+
+    }    
+    preOrder() {
+
+        if (this.root == null) return null
+
+        const result = []
+        const preOrderTraverse = (node) => {
+            result.push(node.data)
+            node.left && preOrderTraverse(node.left)
+            node.right && preOrderTraverse(node.right)
+        }
+
+        preOrderTraverse(this.root)
+        return result
+
+    }
+    postOrder() {
+
+        if (this.root === null) return null
+
+        const result = []
+        const postOrderTraverse = (node) => {
+            result.push(node.data)
+            node.right && postOrderTraverse(node.right)
+            node.left && postOrderTraverse(node.left)
+        }
+
+        postOrderTraverse(this.root)
+        return result
+    }
     
 //inorder, preorder, and postorder functions traverse tree in each way, returns array of values 
 
@@ -269,23 +311,24 @@ class Tree {
 
 }
 
-const nameArray = ['alex', 'bob', 'cindy', 'dave', 'ed', 'frank', 'gina', 'helen', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally', 'tom', 'unis', 'vicki', 'wendel', 'xavier', 'zoe' ]
-const unsortedNames = ['zoe', 'alex', 'xavier', 'bob', 'wendel','cindy', 'vicki','dave','unis','ed','tom', 'frank', 'gina', 'helen', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel']
+const nameArray = ['alex', 'bob', 'cindy', 'dave', 'ed', 'frank', 'gina', 'helen', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally', 'tom', 'unis', 'vicki', 'wendel', 'xavier', 'yanni', 'zoe' ]
+const unsortedNames = ['zoe', 'alex', 'xavier', 'bob', 'wendel','cindy', 'vicki','dave','unis','ed','tom', 'frank', 'gina', 'helen', 'yanni', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally']
 const randomArray = getRandomNumbers(50)
 const sortedArray = mergeSort(randomArray)
+const sortedNames = mergeSort(unsortedNames)
 
 
+const nameTree = new Tree(sortedNames)
+nameTree.buildTree(sortedNames)
 
+// console.log(sortedArray)
 
-console.log(sortedArray)
-
-const myTree = new Tree()
-console.log(myTree)
-console.log(randomArray)
-console.log(myTree.sortArray(randomArray))
-console.log(myTree.getSortedArrayLength(randomArray))
-
-myTree.buildTree(myTree.sortArray(randomArray))
+const myTree = new Tree(sortedArray)
+myTree.buildTree(sortedArray)
+// console.log(myTree)
+// console.log(randomArray)
+// console.log(myTree.sortArray(randomArray))
+// console.log(myTree.getSortedArrayLength(randomArray))
 
 
 // Test the function
@@ -297,4 +340,9 @@ myTree.buildTree(myTree.sortArray(randomArray))
 // console.log(root); // Print the value of the level-0 root node
 // console.log(myTree.returnData(randomArray))
 
-myTree.htmlPrint(myTree.root)
+// myTree.htmlPrint(myTree.root)
+// nameTree.htmlPrint()
+// nameTree.prettyPrint()
+
+myTree.htmlPrint()
+myTree.prettyPrint()
