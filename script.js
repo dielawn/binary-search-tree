@@ -1,8 +1,5 @@
 const containerDiv = document.getElementById('container')
 
-
-
-
 const getRandomNumbers = (numberOfNumbers) => {
 
    let randomArray = []
@@ -75,12 +72,6 @@ function merge(left, right) {
     return mergedArr;
     }
 
-
-
-
-
-
-//build a node class *data, leftChild, rightChild attributes
 class Node {
     constructor(data) {
         this.data = data
@@ -89,8 +80,6 @@ class Node {
     }
 }
 
-//build a tree class *accepts array, root attributes uses return value of buildTree()
-//buildTree function takes array turns it into an balanced binary tree full of Node objects *sort and remove duplicates, return the level-0 root node
 class Tree {
     constructor(array) {
         this.root = this.buildTree(array)    
@@ -115,11 +104,11 @@ class Tree {
         let node = new Node(array[midPoint])                    
         node.right = this.buildTree(array, midPoint + 1, end)
         node.left = this.buildTree(array, start, midPoint - 1)
-        
     
         return node
     }
     insert(data) {
+        
         const node = this.root
         if (node === null) {
             this.root = new Node(data)
@@ -228,6 +217,7 @@ class Tree {
             result.push(node.data)
             node.right && inOrderTraverse(node.right)
         }
+
         inOrderTraverse(this.root)
         return result
 
@@ -260,13 +250,31 @@ class Tree {
 
         postOrderTraverse(this.root)
         return result
+
+    }
+    getHeight(node) {
+
+        if (node === null) return -1
+
+        let left = this.getHeight(node.left)
+        let right = this.getHeight(node.right)
+
+        if (left > right) return left + 1
+        else return right + 1
+
+    }
+    getDepth(node) {
+
+        if (node === null) return 0
+
+        let left = this.getDepth(node.left)
+        let right = this.getDepth(node.right)
+
+        if (left < right) return left + 1
+        else return right + 1
+
     }
     
-//inorder, preorder, and postorder functions traverse tree in each way, returns array of values 
-
-//height function accepts node returns its height
-
-//depth function accepts node returns depth
 
 //is balanced checks if left and right subtree have a height difference no more than 1
 
