@@ -169,7 +169,6 @@ class Tree {
             return root
         }
     }
-     //find function which accepts a value and return the node with the given value
     find(data) {
         const searchTree = (node) => {
 
@@ -181,7 +180,6 @@ class Tree {
         
         return searchTree(this.root)
     }
-    //level order function accepts another fuction, traverses the tree, returns an array of values, queue array
     levelOrderTraversal() {
 
         if (this.root == null) return null
@@ -274,7 +272,12 @@ class Tree {
         else return right + 1
 
     }
-    
+    isBalanced() {
+console.log(this.getDepth(this.root))
+console.log(this.getHeight(this.root) - 1)
+       return (this.getDepth(this.root) >= this.getHeight(this.root) - 1)
+
+    }
 
 //is balanced checks if left and right subtree have a height difference no more than 1
 
