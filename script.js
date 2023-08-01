@@ -273,15 +273,18 @@ class Tree {
 
     }
     isBalanced() {
-console.log(this.getDepth(this.root))
-console.log(this.getHeight(this.root) - 1)
+
        return (this.getDepth(this.root) >= this.getHeight(this.root) - 1)
 
     }
+    balanceTree() {
 
-//is balanced checks if left and right subtree have a height difference no more than 1
-
-// rebalance unbalanced         
+        if (this.isBalanced()) return
+        let nodes =  this.inOrder()
+        this.root = this.buildTree(nodes)
+        
+    }
+      
     
     htmlPrint(node = this.root,  prefix = "", isLeft = true) {
         if (node === null) {
