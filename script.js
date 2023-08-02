@@ -95,13 +95,13 @@ class Tree {
         this.size = sortedArray.length
         return  sortedArray.length
     } 
-    buildTree(array, start = 0, end = this.getSortedArrayLength(array)) {
+    buildTree(array, start = 0, end = array.length) {
         
         if (start >= end) return null 
 
-        let midPoint = Math.floor((start + end) / 2)
-        
-        let node = new Node(array[midPoint])                    
+        const midPoint = Math.floor((start + end) / 2)        
+        const node = new Node(array[midPoint])        
+
         node.right = this.buildTree(array, midPoint + 1, end)
         node.left = this.buildTree(array, start, midPoint - 1)
     
@@ -327,8 +327,8 @@ class Tree {
 
 const nameArray = ['alex', 'bob', 'cindy', 'dave', 'ed', 'frank', 'gina', 'helen', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally', 'tom', 'unis', 'vicki', 'wendel', 'xavier', 'yanni', 'zoe' ]
 const unsortedNames = ['zoe', 'alex', 'xavier', 'bob', 'wendel','cindy', 'vicki','dave','unis','ed','tom', 'frank', 'gina', 'helen', 'yanni', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally']
-const randomArray = getRandomNumbers(50)
-const sortedArray = mergeSort(randomArray)
+
+
 const sortedNames = mergeSort(unsortedNames)
 
 
@@ -337,8 +337,7 @@ nameTree.buildTree(sortedNames)
 
 // console.log(sortedArray)
 
-const myTree = new Tree(sortedArray)
-myTree.buildTree(sortedArray)
+
 // console.log(myTree)
 // console.log(randomArray)
 // console.log(myTree.sortArray(randomArray))
@@ -358,5 +357,33 @@ myTree.buildTree(sortedArray)
 // nameTree.htmlPrint()
 // nameTree.prettyPrint()
 
-myTree.htmlPrint()
-myTree.prettyPrint()
+// myTree.htmlPrint()
+// myTree.prettyPrint()
+
+async function showTree() {
+
+    const randomArray = getRandomNumbers(50)
+    const moreNums = getRandomNumbers(10)
+    const sortedArray = mergeSort(randomArray)
+    const myTree = new Tree(sortedArray)
+    myTree.buildTree(sortedArray)
+    myTree.prettyPrint()
+    myTree.htmlPrint()
+    console.log(`Tree balanced: ${myTree.isBalanced()}`)
+    console.log( `Level Order Traversal: ${myTree.levelOrderTraversal()}`)
+    for (let i = 0; i < moreNums.length; i++) {
+        console.log( `Inserted: ${moreNums[i]}`)
+        myTree.insert(moreNums[i])    
+    }    
+    console.log( `Tree balanced: ${myTree.isBalanced()}`)
+    myTree.balanceTree()
+    myTree.prettyPrint()
+    myTree.htmlPrint()  
+    console.log( `Tree balanced: ${myTree.isBalanced()}`)
+    console.log(`Level Order Traversal: ${myTree.levelOrderTraversal()}`)
+    console.log(`Pre Order Traversal: ${myTree.preOrder()}`)
+    console.log(`Post Order Traversal: ${myTree.postOrder()}`)
+    
+}
+
+showTree()
