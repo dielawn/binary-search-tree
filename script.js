@@ -1,4 +1,7 @@
 const containerDiv = document.getElementById('container')
+const treeContainer = document.getElementById('treeContainer')
+const inputDiv = document.getElementById('inputDiv')
+const infoContainer = document.getElementById('infoContainer')
 
 const getRandomNumbers = (numberOfNumbers) => {
 
@@ -83,7 +86,7 @@ class Node {
 class Tree {
     constructor(array) {
         this.root = this.buildTree(array)    
-        this.size = this.getSortedArrayLength(this.sortArray)
+        // this.size = this.getSortedArrayLength(this.sortArray)
     }
     sortArray(array) {
 
@@ -92,7 +95,7 @@ class Tree {
     getSortedArrayLength(array) {
 
         let sortedArray = mergeSort(array)
-        this.size = sortedArray.length
+        // this.size = sortedArray.length
         return  sortedArray.length
     } 
     buildTree(array, start = 0, end = array.length) {
@@ -113,7 +116,6 @@ class Tree {
         const node = this.root
         if (node === null) {
             this.root = new Node(data)
-            this.size++
             return
         } else {
             const searchTree = (node) => {
@@ -127,7 +129,6 @@ class Tree {
                 } else if (data > node.data) {
                     if (node.right === null) {
                         node.right = new Node(data)
-                        this.size++
                         return
                     } else searchTree(node.right)
                 }
@@ -138,7 +139,6 @@ class Tree {
     remove(data) {
 
         this.root = this.removeNode(this.root, data)
-        this.size-- 
     }
     removeNode(root, data) {
 
@@ -301,7 +301,7 @@ class Tree {
         const newNode = document.createElement("div");
         newNode.classList.add('node')
         newNode.textContent = `${prefix}${isLeft ? "  └────   " : "  ┌──── "}${node.data}`;
-        containerDiv.appendChild(newNode);
+        treeContainer.appendChild(newNode);
     
         if (node.left !== null) {
             this.htmlPrint(node.left,  `${prefix}${isLeft ? "    " : "│   "}`, true);
@@ -386,4 +386,85 @@ async function showTree() {
     
 }
 
-showTree()
+// showTree()
+
+const printTree = (tree) => {
+    tree.prettyPrint()
+    treeContainer.innerHTML = ''
+    tree.htmlPrint()
+}
+
+const renderInputs = () => {
+
+    let myTree = null
+
+    const randomNumbers = document.createElement('p')
+    randomNumbers.classList.add('info')
+    const randomArray = getRandomNumbers(50)
+    randomNumbers.textContent = `Unordered numbers: ${randomArray}`
+    infoContainer.appendChild(randomNumbers)
+
+    const sortArrayBtn = document.createElement('button')
+    let sortedArray = null
+    sortArrayBtn.textContent = 'Sort Array'
+    sortArrayBtn.addEventListener('click', () => {
+        sortedArray = mergeSort(randomArray)
+        randomNumbers.textContent = `Ordered numbers: ${sortedArray}`
+    })
+    inputDiv.appendChild(sortArrayBtn)
+
+    const createTreeBtn = document.createElement('button')
+    createTreeBtn.textContent = 'Create Tree'
+    createTreeBtn.addEventListener('click', () => {
+        if (sortedArray === null || sortedArray === randomNumbers) alert('Array must be sorted')
+        else {
+            myTree = new Tree(sortedArray)
+            myTree.buildTree(sortedArray)
+            printTree(myTree)
+        }
+    })
+    inputDiv.appendChild(createTreeBtn)
+
+    const insertInput = document.createElement('input')
+    const insertBtn = document.createElement('button')
+    insertBtn.textContent = 'Insert node'
+    insertBtn.addEventListener('click', () => {
+        if (insertInput.value != null) {
+            myTree.insert(insertInput.value)
+            printTree(myTree)
+        } 
+    })
+    inputDiv.appendChild(insertInput)
+    inputDiv.appendChild(insertBtn)
+
+    const removeItemInput = document.createElement('input')
+    const removeItemBtn = document.createElement('button')
+    removeItemBtn.textContent = 'Remove node'
+    removeItemBtn.addEventListener('click', () => {
+        if (removeItemInput.value != null) {
+        myTree.remove(removeItemInput.value)
+        printTree(myTree)
+        }
+    })
+    inputDiv.appendChild(removeItemInput)
+    inputDiv.appendChild(removeItemBtn)
+
+    const findDataInput = document.createElement('input')
+    const findDataBtn = document.createElement('button')
+    findDataBtn.textContent = 'Find node'
+    findDataBtn.addEventListener('click', () => {
+        if (findDataInput.value != null) myTree.find(findDataInput.value)
+    })
+    inputDiv.appendChild(findDataInput)
+    inputDiv.appendChild(findDataBtn)
+
+    const rebalanceTreeBtn = document.createElement('button')
+    rebalanceTreeBtn.addEventListener('click', () => {
+        myTree.balanceTree()
+        printTree(myTree)
+    })
+    inputDiv.appendChild(rebalanceTreeBtn)
+    
+}
+
+renderInputs()
