@@ -107,6 +107,7 @@ class Tree {
     
         return node
     }
+    
     insert(data) {
         
         const node = this.root
@@ -116,6 +117,7 @@ class Tree {
             return
         } else {
             const searchTree = (node) => {
+
                 if (data < node.data) {
                     if (node.left === null) {
                         node.left = new Node(data)
@@ -134,11 +136,13 @@ class Tree {
         }
     }
     remove(data) {
+
         this.root = this.removeNode(this.root, data)
         this.size-- 
     }
     removeNode(root, data) {
-        if (root === null) return root
+
+        if (root === null) return
         
         if (data < root.data)  {
             root.left = this.removeNode(root.left, data)
@@ -170,6 +174,7 @@ class Tree {
         }
     }
     find(data) {
+
         const searchTree = (node) => {
 
             if (node === null) return null
@@ -283,9 +288,7 @@ class Tree {
         let nodes =  this.inOrder()
         this.root = this.buildTree(nodes)
         
-    }
-      
-    
+    }    
     htmlPrint(node = this.root,  prefix = "", isLeft = true) {
         if (node === null) {
             return;
@@ -304,8 +307,6 @@ class Tree {
             this.htmlPrint(node.left,  `${prefix}${isLeft ? "    " : "│   "}`, true);
         }
     }
-    
-
     prettyPrint(node = this.root, prefix = "", isLeft = true) {
         if (node === null) {
             return
@@ -321,9 +322,8 @@ class Tree {
             this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true)
         }
     }
-
-
 }
+
 
 const nameArray = ['alex', 'bob', 'cindy', 'dave', 'ed', 'frank', 'gina', 'helen', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally', 'tom', 'unis', 'vicki', 'wendel', 'xavier', 'yanni', 'zoe' ]
 const unsortedNames = ['zoe', 'alex', 'xavier', 'bob', 'wendel','cindy', 'vicki','dave','unis','ed','tom', 'frank', 'gina', 'helen', 'yanni', 'ira', 'john', 'karen', 'loyd', 'mary', 'ned', 'opal', 'piper', 'quinton', 'rachel', 'sally']
