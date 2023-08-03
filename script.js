@@ -32,26 +32,20 @@ function mergeSort(arr) {
 }
 
 function merge(left, right) {
-    let mergedArr = []
-    let leftIndex = 0
-    let rightIndex = 0
+    let mergedArr = [];
+    let leftIndex = 0;
+    let rightIndex = 0;
 
     while (leftIndex < left.length && rightIndex < right.length) {
         if (left[leftIndex] < right[rightIndex]) {
-            if (mergedArr.length === 0 || left[leftIndex] !== mergedArr[mergedArr.length - 1]) {
-                mergedArr.push(left[leftIndex]);
-            }
+            mergedArr.push(left[leftIndex]);
             leftIndex++;
         } else if (right[rightIndex] < left[leftIndex]) {
-            if (mergedArr.length === 0 || right[rightIndex] !== mergedArr[mergedArr.length - 1]) {
-                mergedArr.push(right[rightIndex]);
-            }
+            mergedArr.push(right[rightIndex]);
             rightIndex++;
         } else {
             // If both elements are equal, push one of them (avoid duplicates)
-            if (mergedArr.length === 0 || left[leftIndex] !== mergedArr[mergedArr.length - 1]) {
-                mergedArr.push(left[leftIndex]);
-            }
+            mergedArr.push(left[leftIndex]);
             leftIndex++;
             rightIndex++;
         }
@@ -59,21 +53,18 @@ function merge(left, right) {
 
     // Add remaining elements from both arrays
     while (leftIndex < left.length) {
-        if (mergedArr.length === 0 || left[leftIndex] !== mergedArr[mergedArr.length - 1]) {
-            mergedArr.push(left[leftIndex]);
-        }
+        mergedArr.push(left[leftIndex]);
         leftIndex++;
     }
 
     while (rightIndex < right.length) {
-        if (mergedArr.length === 0 || right[rightIndex] !== mergedArr[mergedArr.length - 1]) {
-            mergedArr.push(right[rightIndex]);
-        }
+        mergedArr.push(right[rightIndex]);
         rightIndex++;
     }
 
     return mergedArr;
-    }
+}
+
 
 class Node {
     constructor(data) {
@@ -300,7 +291,7 @@ class Tree {
     
         const newNode = document.createElement("div");
         newNode.classList.add('node')
-        newNode.textContent = `${prefix}${isLeft ? "  └────   " : "  ┌──── "}${node.data}`;
+        newNode.textContent = `${prefix}${isLeft ? "  └── " : "  ┌── "}${node.data}`;
         treeContainer.appendChild(newNode);
     
         if (node.left !== null) {
@@ -360,7 +351,7 @@ nameTree.buildTree(sortedNames)
 // myTree.htmlPrint()
 // myTree.prettyPrint()
 
-async function showTree() {
+function showTree() {
 
     const randomArray = getRandomNumbers(50)
     const moreNums = getRandomNumbers(10)
@@ -398,18 +389,27 @@ let myTree = null
 
 const renderInputs = () => {
 
+    const randoNumBtn = document.createElement('button')
     const randomNumbers = document.createElement('p')
     randomNumbers.classList.add('info')
-    const randomArray = getRandomNumbers(50)
-    randomNumbers.textContent = `Unordered numbers: ${randomArray}`
-    infoContainer.appendChild(randomNumbers)
+    randoNumBtn.textContent = 'Random Numbers'
+    let randomArray = null
+    randoNumBtn.addEventListener('click', () => {
+        randomArray = getRandomNumbers(25)
+        randomNumbers.textContent = `Random numbers: ${randomArray}`
+        infoContainer.appendChild(randomNumbers)
+    })    
+    inputDiv.appendChild(randoNumBtn)
+   
 
     const sortArrayBtn = document.createElement('button')
-    let sortedArray = null
+    let sortedNumbers = document.createElement('p')
+    let sortedArrayTxt = null
     sortArrayBtn.textContent = 'Sort Array'
     sortArrayBtn.addEventListener('click', () => {
-        sortedArray = mergeSort(randomArray)
-        randomNumbers.textContent = `Ordered numbers: ${sortedArray}`
+        sortedArrayTxt = myTree.buildTree.inOrder()
+        sortedNumbers.textContent = `Ordered numbers: ${sortedArrayTxt}`
+        infoContainer.appendChild(sortedNumbers)
     })
     inputDiv.appendChild(sortArrayBtn)
 
@@ -449,12 +449,14 @@ const renderInputs = () => {
     const insertBtn = document.createElement('button')
     insertBtn.textContent = 'Insert node'
     insertBtn.addEventListener('click', () => {
-        if (insertInput.value != null) {
+        if (insertInput.value === null) return
+        else {
             if (!myTree) {
                 myTree = new Tree(sortedArray)
             } else {
                 myTree.insert(insertInput.value)                
             }
+            insertInput.value = ''
             printTree(myTree)
         } 
     })
@@ -469,6 +471,7 @@ const renderInputs = () => {
     removeItemBtn.addEventListener('click', () => {
         if (removeItemInput.value != null) {
         myTree.remove(removeItemInput.value)
+        removeItemInput.value = ''
         printTree(myTree)
         }
     })
@@ -482,9 +485,12 @@ const renderInputs = () => {
     const findDataBtn = document.createElement('button')
     findDataBtn.textContent = 'Find node'
     findDataBtn.addEventListener('click', () => {
-        // if (findDataInput.value != null) myTree.find(findDataInput.value) {
-        //     //add class red
-        // }
+        if (findDataInput === null) return
+        else {
+
+        }
+        
+        findDataInput.value = ''
         getNodeElements()
     })
     inputDiv.appendChild(findDiv)
@@ -511,3 +517,4 @@ const getNodeElements = () => {
     }
      
 }
+
