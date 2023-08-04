@@ -419,17 +419,22 @@ const renderInputs = () => {
     const postOrderArray = document.createElement('p')
     const treeHeight = document.createElement('p')
     const treeDepth = document.createElement('p')
+
+    const setInfo = () => {
+        inOrderArray.textContent = `In Order: ${myTree.inOrder()}`
+        levelOrderElem.textContent = `Level Order: ${myTree.levelOrderTraversal()}`
+        preOrderArray.textContent = `Pre Order: ${myTree.preOrder()}`
+        postOrderArray.textContent = `Post Order: ${myTree.postOrder()}`
+        treeHeight.textContent = `Height: ${myTree.getHeight(myTree.root)}`
+        treeDepth.textContent = `Depth: ${myTree.getDepth(myTree.root)}`
+    }
+
     createTreeBtn.addEventListener('click', () => {
         if (sortedArray === null || sortedArray === randomNumbers) alert('Array must be sorted')
         else {
             myTree = new Tree(sortedArray)
             myTree.buildTree(sortedArray)
-            inOrderArray.textContent = `In Order: ${myTree.inOrder()}`
-            levelOrderElem.textContent = `Level Order: ${myTree.levelOrderTraversal()}`
-            preOrderArray.textContent = `Pre Order: ${myTree.preOrder()}`
-            postOrderArray.textContent = `Post Order: ${myTree.postOrder()}`
-            treeHeight.textContent = `Height: ${myTree.getHeight(myTree.root)}`
-            treeDepth.textContent = `Depth: ${myTree.getDepth(myTree.root)}`
+            setInfo()
 
             printTree(myTree)
         }
@@ -452,7 +457,8 @@ const renderInputs = () => {
             if (!myTree) {
                 myTree = new Tree(sortedArray)
             } else {
-                myTree.insert(insertInput.value)                
+                myTree.insert(insertInput.value) 
+                setInfo()           
             }
             insertInput.value = ''
             printTree(myTree)
@@ -469,6 +475,7 @@ const renderInputs = () => {
     removeItemBtn.addEventListener('click', () => {
         if (removeItemInput.value != null) {
         myTree.remove(removeItemInput.value)
+        setInfo()
         removeItemInput.value = ''
         printTree(myTree)
         }
@@ -511,6 +518,7 @@ const renderInputs = () => {
     rebalanceTreeBtn.textContent = 'Balance Tree'
     rebalanceTreeBtn.addEventListener('click', () => {
         myTree.balanceTree()
+        setInfo()
         printTree(myTree)
     })
     inputDiv.appendChild(rebalanceTreeBtn)
