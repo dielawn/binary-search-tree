@@ -66,6 +66,7 @@ function merge(left, right) {
 }
 
 
+
 class Node {
     constructor(data) {
         this.data = data
@@ -89,17 +90,28 @@ class Tree {
         // this.size = sortedArray.length
         return  sortedArray.length
     } 
-    buildTree(array, start = 0, end = array.length) {
+    // buildTree(array, start = 0, end = array.length) {
         
-        if (start >= end) return null 
+    //     if (start >= end) return null 
 
-        const midPoint = Math.floor((start + end) / 2)        
-        const node = new Node(array[midPoint])        
+    //     const midPoint = Math.floor((start + end) / 2)        
+    //     const node = new Node(array[midPoint])        
 
-        node.right = this.buildTree(array, midPoint + 1, end)
-        node.left = this.buildTree(array, start, midPoint - 1)
+    //     node.right = this.buildTree(array, midPoint + 1, end)
+    //     node.left = this.buildTree(array, start, midPoint - 1)
     
-        return node
+    //     return node
+    // }
+    buildTree(nodes) {
+        if (!nodes.length) return null;
+
+        const mid = Math.floor(nodes.length / 2);
+        const root = new Node(nodes[mid]);
+
+        root.left = this.buildTree(nodes.slice(0, mid));
+        root.right = this.buildTree(nodes.slice(mid + 1));
+
+        return root;
     }
     
     insert(data) {
@@ -291,6 +303,7 @@ class Tree {
     
         const newNode = document.createElement("div");
         newNode.classList.add('node')
+        newNode.id = node.data
         newNode.textContent = `${prefix}${isLeft ? "  └── " : "  ┌── "}${node.data}`;
         treeContainer.appendChild(newNode);
     
@@ -351,7 +364,7 @@ nameTree.buildTree(sortedNames)
 // myTree.htmlPrint()
 // myTree.prettyPrint()
 
-function showTree() {
+async function showTree() {
 
     const randomArray = getRandomNumbers(50)
     const moreNums = getRandomNumbers(10)
@@ -393,29 +406,14 @@ const renderInputs = () => {
     const randomNumbers = document.createElement('p')
     randomNumbers.classList.add('info')
     randoNumBtn.textContent = 'Random Numbers'
-    let randomArray = null
-    randoNumBtn.addEventListener('click', () => {
-        randomArray = getRandomNumbers(25)
-        randomNumbers.textContent = `Random numbers: ${randomArray}`
-        infoContainer.appendChild(randomNumbers)
-    })    
-    inputDiv.appendChild(randoNumBtn)
-   
-
-    const sortArrayBtn = document.createElement('button')
+    let randomArray = getRandomNumbers(25)
     let sortedNumbers = document.createElement('p')
-    let sortedArrayTxt = null
-    sortArrayBtn.textContent = 'Sort Array'
-    sortArrayBtn.addEventListener('click', () => {
-        sortedArrayTxt = myTree.buildTree.inOrder()
-        sortedNumbers.textContent = `Ordered numbers: ${sortedArrayTxt}`
-        infoContainer.appendChild(sortedNumbers)
-    })
-    inputDiv.appendChild(sortArrayBtn)
+    let sortedArray = mergeSort(randomArray)
+
 
     const createTreeBtn = document.createElement('button')
     createTreeBtn.textContent = 'Create Tree'
-    const levelOrderArray = document.createElement('p')
+    const levelOrderElem = document.createElement('p')
     const inOrderArray = document.createElement('p')
     const preOrderArray = document.createElement('p')
     const postOrderArray = document.createElement('p')
@@ -426,8 +424,8 @@ const renderInputs = () => {
         else {
             myTree = new Tree(sortedArray)
             myTree.buildTree(sortedArray)
-            levelOrderArray.textContent = `Level Order: ${myTree.levelOrderTraversal()}`
             inOrderArray.textContent = `In Order: ${myTree.inOrder()}`
+            levelOrderElem.textContent = `Level Order: ${myTree.levelOrderTraversal()}`
             preOrderArray.textContent = `Pre Order: ${myTree.preOrder()}`
             postOrderArray.textContent = `Post Order: ${myTree.postOrder()}`
             treeHeight.textContent = `Height: ${myTree.getHeight(myTree.root)}`
@@ -437,7 +435,7 @@ const renderInputs = () => {
         }
     })
     inputDiv.appendChild(createTreeBtn)
-    infoContainer.appendChild(levelOrderArray)
+    infoContainer.appendChild(levelOrderElem)
     infoContainer.appendChild(inOrderArray)
     infoContainer.appendChild(preOrderArray)
     infoContainer.appendChild(postOrderArray)
@@ -485,13 +483,24 @@ const renderInputs = () => {
     const findDataBtn = document.createElement('button')
     findDataBtn.textContent = 'Find node'
     findDataBtn.addEventListener('click', () => {
-        if (findDataInput === null) return
-        else {
-
+        const nodeElements = document.querySelectorAll('.node')
+        for (const node of nodeElements) {
+            if (node.classList.contains('red')) {
+                node.classList.remove('red')
+            }
         }
+        if (findDataInput.value === '') return      
+           
+           let id = findDataInput.value
+           const foundElement = document.getElementById(id)
+
+            if (foundElement) {
+                foundElement.classList.add('red')
+                
+            }     
         
         findDataInput.value = ''
-        getNodeElements()
+        return
     })
     inputDiv.appendChild(findDiv)
     findDiv.appendChild(findDataBtn)
