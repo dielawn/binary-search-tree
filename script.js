@@ -1,3 +1,5 @@
+
+
 const containerDiv = document.getElementById('container')
 const treeContainer = document.getElementById('treeContainer')
 const inputDiv = document.getElementById('inputDiv')
@@ -179,7 +181,7 @@ class Tree {
     find(data) {
 
         const searchTree = (node) => {
-
+            
             if (node === null) return null
             if (data === node.data) return node
             else if (data < node.data) return searchTree(node.left)
@@ -400,6 +402,10 @@ const printTree = (tree) => {
 
 let myTree = null
 
+async function delay(time) {
+    await new Promise((resolve) => setTimeout(resolve, time))
+}
+
 const renderInputs = () => {
 
     const randoNumBtn = document.createElement('button')
@@ -489,29 +495,45 @@ const renderInputs = () => {
     const findDataInput = document.createElement('input')
     const findDataBtn = document.createElement('button')
     findDataBtn.textContent = 'Find node'
-    findDataBtn.addEventListener('click', () => {
-        const nodeElements = document.querySelectorAll('.node')
-        for (const node of nodeElements) {
-            if (node.classList.contains('red')) {
-                node.classList.remove('red')
-            }
-        }
-        if (findDataInput.value === '') return      
-           
-           let id = findDataInput.value
-           const foundElement = document.getElementById(id)
 
-            if (foundElement) {
-                foundElement.classList.add('red')
-                
-            }     
-        
-        findDataInput.value = ''
-        return
-    })
-    inputDiv.appendChild(findDiv)
-    findDiv.appendChild(findDataBtn)
-    findDiv.appendChild(findDataInput)
+    findDataBtn.addEventListener('click', () => {
+    const nodeElements = document.querySelectorAll('.node')
+    for (const node of nodeElements) {
+        if (node.classList.contains('blue')) {
+            node.classList.remove('blue')
+        }
+    }
+
+    if (findDataInput.value === '') return
+
+    const result = myTree.find(parseInt(findDataInput.value, 10))
+    if (result) {
+    console.log(`Found: ${result.data}`)
+    const foundElement = document.getElementById(result.data.toString())
+    if (foundElement) {
+      foundElement.classList.add('blue')
+    }
+    } else {
+        console.log(`Data not found in the tree.`)  
+        nodeElements.forEach((element) => {
+            element.classList.add('red')
+        })
+        setTimeout(() => {
+            nodeElements.forEach((element) => {
+                element.classList.remove('red')
+            })
+        }, 1000)
+   
+    }
+
+  findDataInput.value = ''
+  return
+})
+
+inputDiv.appendChild(findDiv);
+findDiv.appendChild(findDataBtn);
+findDiv.appendChild(findDataInput);
+
     
 
     const rebalanceTreeBtn = document.createElement('button')
