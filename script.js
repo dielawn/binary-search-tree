@@ -80,7 +80,6 @@ class Node {
 class Tree {
     constructor(array) {
         this.root = this.buildTree(array)    
-        // this.size = this.getSortedArrayLength(this.sortArray)
     }
     sortArray(array) {
 
@@ -89,31 +88,19 @@ class Tree {
     getSortedArrayLength(array) {
 
         let sortedArray = mergeSort(array)
-        // this.size = sortedArray.length
         return  sortedArray.length
     } 
-    // buildTree(array, start = 0, end = array.length) {
-        
-    //     if (start >= end) return null 
 
-    //     const midPoint = Math.floor((start + end) / 2)        
-    //     const node = new Node(array[midPoint])        
-
-    //     node.right = this.buildTree(array, midPoint + 1, end)
-    //     node.left = this.buildTree(array, start, midPoint - 1)
-    
-    //     return node
-    // }
     buildTree(nodes) {
-        if (!nodes.length) return null;
+        if (!nodes.length) return null
 
-        const mid = Math.floor(nodes.length / 2);
-        const root = new Node(nodes[mid]);
+        const mid = Math.floor(nodes.length / 2)
+        const root = new Node(nodes[mid])
 
         root.left = this.buildTree(nodes.slice(0, mid));
-        root.right = this.buildTree(nodes.slice(mid + 1));
+        root.right = this.buildTree(nodes.slice(mid + 1))
 
-        return root;
+        return root
     }
     
     insert(data) {
@@ -142,8 +129,9 @@ class Tree {
         }
     }
     remove(data) {
-
+        
         this.root = this.removeNode(this.root, data)
+      
     }
     removeNode(root, data) {
 
@@ -402,20 +390,13 @@ const printTree = (tree) => {
 
 let myTree = null
 
-async function delay(time) {
-    await new Promise((resolve) => setTimeout(resolve, time))
-}
+
 
 const renderInputs = () => {
 
-    const randoNumBtn = document.createElement('button')
-    const randomNumbers = document.createElement('p')
-    randomNumbers.classList.add('info')
-    randoNumBtn.textContent = 'Random Numbers'
-    let randomArray = getRandomNumbers(25)
-    let sortedNumbers = document.createElement('p')
+  
+    let randomArray = getRandomNumbers(25) 
     let sortedArray = mergeSort(randomArray)
-
 
     const createTreeBtn = document.createElement('button')
     createTreeBtn.textContent = 'Create Tree'
@@ -435,15 +416,14 @@ const renderInputs = () => {
         treeDepth.textContent = `Depth: ${myTree.getDepth(myTree.root)}`
     }
 
-    createTreeBtn.addEventListener('click', () => {
-        if (sortedArray === null || sortedArray === randomNumbers) alert('Array must be sorted')
-        else {
+    createTreeBtn.addEventListener('click', () => {      
+     
             myTree = new Tree(sortedArray)
             myTree.buildTree(sortedArray)
             setInfo()
 
             printTree(myTree)
-        }
+        
     })
     inputDiv.appendChild(createTreeBtn)
     infoContainer.appendChild(levelOrderElem)
@@ -452,6 +432,7 @@ const renderInputs = () => {
     infoContainer.appendChild(postOrderArray)
     infoContainer.appendChild(treeHeight)
     infoContainer.appendChild(treeDepth)
+
 
     const insertDiv = document.createElement('div')
     const insertInput = document.createElement('input')
@@ -473,31 +454,30 @@ const renderInputs = () => {
     inputDiv.appendChild(insertDiv)
     insertDiv.appendChild(insertBtn)
     insertDiv.appendChild(insertInput)
-    
+       
+    const nodeElements = document.querySelectorAll('.node')
     const removeDiv = document.createElement('div')
     const removeItemBtn = document.createElement('button')
     const removeItemInput = document.createElement('input')    
     removeItemBtn.textContent = 'Remove node'
     removeItemBtn.addEventListener('click', () => {
-        if (removeItemInput.value != null) {
         myTree.remove(removeItemInput.value)
         setInfo()
         removeItemInput.value = ''
-        printTree(myTree)
-        }
+        printTree(myTree)    
+
     })
     inputDiv.appendChild(removeDiv)  
     removeDiv.appendChild(removeItemBtn)
     removeDiv.appendChild(removeItemInput)
 
-
     const findDiv = document.createElement('div')
     const findDataInput = document.createElement('input')
     const findDataBtn = document.createElement('button')
     findDataBtn.textContent = 'Find node'
-
+    
     findDataBtn.addEventListener('click', () => {
-    const nodeElements = document.querySelectorAll('.node')
+    
     for (const node of nodeElements) {
         if (node.classList.contains('blue')) {
             node.classList.remove('blue')
@@ -522,7 +502,7 @@ const renderInputs = () => {
             nodeElements.forEach((element) => {
                 element.classList.remove('red')
             })
-        }, 1000)
+        }, 200)
    
     }
 
